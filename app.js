@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -15,12 +17,12 @@ const twilioAPI = require('./src/sendSMS.js');
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: ["http://localhost:3000", "http://localhost:3001", "https://nevo-barbershop-lines.onrender.com/"],
     methods: ["GET", "POST"],
   },
 });
 
-mongoose.connect('mongodb+srv://yinoni2212:ihJJG1NMY5X7lHHt@cluster0.k1zk58s.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect(process.env.MONGODB_URL)
 .then(() => {
   console.log('Connected to db!');
 
