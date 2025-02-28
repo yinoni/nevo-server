@@ -17,7 +17,7 @@ const twilioAPI = require('./src/sendSMS.js');
 
 const io = new Server(server, {
   cors: {
-    origin: ["https://nevo-barbershop-lines.onrender.com"],
+    origin: ["https://nevo-barbershop-lines.onrender.com", "https://nevo-admin.onrender.com"],
     methods: ["GET", "POST"],
   },
 });
