@@ -34,5 +34,4 @@ exports.cancelLine = async (lineData) => {
     .then((result) => {
         console.log(result);
     });
-    
 }

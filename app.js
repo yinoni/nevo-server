@@ -17,7 +17,7 @@ const twilioAPI = require('./src/sendSMS.js');
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", "https://nevo-barbershop-lines.onrender.com", "https://nevo-admin.onrender.com"],
+    origin: ["http://localhost:3000", "http://localhost:3001", "https://nevo-barbershop-lines.onrender.com", "https://nevo-admin.onrender.com"],
     methods: ["GET", "POST"],
   },
 });
@@ -65,6 +65,10 @@ io.on('connection', (socket) => {
 
   socket.on("cancelLine", async (lineData) => {
     await lineController.cancelLine(lineData);
+
+    //Return the canceled line back to the list
+    await dateController.addHoursToDate({date: lineData.date, hour: lineData.hour});
+    
     io.emit("postCancelLine", lineData);
   });
 

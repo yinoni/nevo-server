@@ -37,3 +37,23 @@ exports.getHours = async (req, res) => {
         res.send(result || {date: data.date, hours: []});
     })
 }
+
+
+/*Add specific hour to list
+
+    *** data- {date: any, hour: String}
+
+*/
+exports.addHoursToDate = async (data) => {
+    DateMdl.updateOne({date: data.date}, {
+        $push: {
+            hours: {
+                $each: [data.hour],
+                $sort: 1
+            }
+        }
+    })
+    .then(result => {
+        console.log('THe result is ====> ', result);
+    });
+}
