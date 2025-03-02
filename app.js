@@ -58,9 +58,9 @@ io.on('connection', (socket) => {
 
     await lineController.addNewLine(line);
 
-    twilioAPI.sendSMS(smsMSG);
+    //twilioAPI.sendSMS(smsMSG);
     socket.broadcast.emit("updatedHours", line);
-    
+
   });
 
   socket.on("cancelLine", async (lineData) => {
