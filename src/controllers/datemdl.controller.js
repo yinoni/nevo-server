@@ -57,3 +57,41 @@ exports.addHoursToDate = async (data) => {
         console.log('THe result is ====> ', result);
     });
 }
+
+/*This function removes specific hour from the date hours list*/
+exports.removeHourFromDate = async (data) => {
+    DateMdl.updateOne({date: data.date}, {
+        $pull: { hours: data.hour }
+    })
+    .then(result => {
+        console.log('THe result is ====> ', result);
+    });
+}
+
+
+exports.addSpecificHour = async (hourData, CB) => {
+    console.log(`Date: ${hourData.date}\nHour: ${hourData.hour}`);
+    await DateMdl.updateOne({date: hourData.date}, {
+        $addToSet: {
+            hours: hourData.hour  
+        }
+    })
+    .then(res => {
+        console.log(`Result ${res.modifiedCount}`)
+    });
+
+    await DateMdl.updateOne({date: hourData.date}, {
+        $push: {
+            hours: {
+                $each: [],
+                $sort: 1
+            }  
+        }
+    })
+    .then(res => {
+        console.log(`Sortred!`);   
+    });
+
+    
+    
+}

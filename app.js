@@ -49,18 +49,23 @@ io.on('connection', (socket) => {
     await dateController.setHours(hoursData);
   });
 
+  /*Adding specific hour to the specific date hours list*/
+  socket.on("addSpecificHour", async (hourData) => {
+    await dateController.addSpecificHour(hourData);
+    io.emit("postAddedSpecificHour", hourData);
+
+  });
+
   /*Adding new line*/
   socket.on("addLine", async (line) => {
     console.log(line);
     let smsMSG = `  נקבע תור חדש!\nבתאריך: ${line.date}\nבשעה: ${line.hour}`
 
-    console.log("ADDING LINE!");
-
     await lineController.addNewLine(line);
 
     //twilioAPI.sendSMS(smsMSG);
     socket.broadcast.emit("updatedHours", line);
-
+    io.emit('addedLine', line);
   });
 
   socket.on("cancelLine", async (lineData) => {
@@ -71,6 +76,11 @@ io.on('connection', (socket) => {
     
     io.emit("postCancelLine", lineData);
   });
+
+  socket.on("removeHourFromDate", async (data) => {
+    await dateController.removeHourFromDate(data);
+    socket.broadcast.emit("updatedHours", data);
+  })
 
   socket.on("disconnect", () => {
     console.log('a user disconnected!');
